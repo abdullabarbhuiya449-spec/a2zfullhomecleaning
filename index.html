@@ -22,7 +22,7 @@
   .app-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -32,7 +32,7 @@
     flex: 1 1 auto;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 85px;
+    padding-bottom: 95px;
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -96,7 +96,7 @@
     </div>
 
     <!-- ৩. নিচে আটকে থাকা কার্ট বার: কোনো সার্ভিস সিলেক্ট করলে এখানেই ভেসে উঠবে -->
-    <div id="homeBottomBar" style="display: none;" class="absolute bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 shadow-[0_-8px_25px_rgba(0,0,0,0.18)] flex items-center justify-between max-w-xl mx-auto">
+    <div id="homeBottomBar" style="display: none;" class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 px-4 py-3 shadow-[0_-8px_25px_rgba(0,0,0,0.18)] flex items-center justify-between max-w-xl mx-auto">
       <div>
         <span id="bottomTotalPrice" class="text-base font-black text-slate-900 block leading-tight">₹0</span>
         <span id="bottomItemCount" class="text-[10px] text-slate-500 font-medium">0 services</span>
@@ -317,6 +317,8 @@
 
   <!-- ================= JAVASCRIPT ================= -->
   <script>
+    const BUSINESS_WHATSAPP = "918686932203";
+
     const unfurnishedDetails = {
       'Balcony': [
         'Floor tiles & surface deep machine/manual scrub and wash',
@@ -365,252 +367,251 @@
       ],
       'Living Room': [
         'Living room sofa set dry vacuum extraction for dust removal',
-        'Center table, TV unit & furniture exterior wiped and dusted',
-        'Ceiling fans & lighting fixtures dusted',
-        'Complete living room rotary floor scrub & buffing (Interior cabinets excluded)'
+        'Floor deep cleaning, cobweb & dust removal across walls/ceiling',
+        'TV unit, glass windows, doors & switchboards wiped clean',
+        'Fans, lights & accessible corners cleaned'
       ],
       'Bedroom': [
-        'Bed mattress dry vacuum extraction for dust and allergen removal',
-        'Wardrobes & dresser exterior surface dusting and wipe down',
-        'Window grills, glass polish & slider tracks cleaned',
-        'Ceiling fan & AC exterior wipe (Wardrobe interiors excluded)'
+        'Bedroom floor deep cleaning & dust/cobweb removal',
+        'Wardrobe & bed exterior wipe down and glass/mirror cleaning',
+        'Window frames, grills & switchboards wiped clean',
+        'Ceiling fan blades & lights dusted'
       ],
       'Bathroom': [
-        'Wall & floor tiles hard water descaling with deep scrub',
-        'Commode & washbasin deep chemical wash & scale removal',
-        'Taps, shower head & chrome steel fixtures mirror polished',
-        'Bathroom mirror & exhaust fan wiped clean'
+        'Wall & floor tiles hard water stain removal & deep scrub',
+        'Sanitaryware, commode, sink & fittings sanitized & polished',
+        'Mirror, glass partition & exhaust fan cleaned',
+        'Drainage & floor dried thoroughly'
       ]
     };
 
-    const quickAddons = [
-      { id: 'addon_ceiling', name: 'Ceiling dusting & cobweb cleaning', rating: '★ 4.83 (62K)', price: 199, img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=250&q=80', count: 0 },
-      { id: 'addon_sofa', name: 'Sofa & upholstery wet shampooing', rating: '★ 4.81 (23K)', price: 149, img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=250&q=80', count: 0 },
-      { id: 'addon_balcony', name: 'Balcony deep cleaning', rating: '★ 4.82 (31K)', price: 499, img: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=250&q=80', count: 0 }
+    const servicesCatalog = [
+      { id: '1bhk-un', cat: 'pkg', name: '1BHK Unfurnished Deep Cleaning', price: 2899, tag: 'Unfurnished', type: 'unfurnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '2bhk-un', cat: 'pkg', name: '2BHK Unfurnished Deep Cleaning', price: 3899, tag: 'Unfurnished', type: 'unfurnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '3bhk-un', cat: 'pkg', name: '3BHK Unfurnished Deep Cleaning', price: 4899, tag: 'Unfurnished', type: 'unfurnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '4bhk-un', cat: 'pkg', name: '4BHK Unfurnished Deep Cleaning', price: 5899, tag: 'Unfurnished', type: 'unfurnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '5bhk-un', cat: 'pkg', name: '5BHK Unfurnished Deep Cleaning', price: 6799, tag: 'Unfurnished', type: 'unfurnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+
+      { id: '1bhk-fu', cat: 'pkg', name: '1BHK Furnished Deep Cleaning', price: 3799, tag: 'Furnished', type: 'furnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '2bhk-fu', cat: 'pkg', name: '2BHK Furnished Deep Cleaning', price: 4699, tag: 'Furnished', type: 'furnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '3bhk-fu', cat: 'pkg', name: '3BHK Furnished Deep Cleaning', price: 5599, tag: 'Furnished', type: 'furnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '4bhk-fu', cat: 'pkg', name: '4BHK Furnished Deep Cleaning', price: 6399, tag: 'Furnished', type: 'furnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+      { id: '5bhk-fu', cat: 'pkg', name: '5BHK Furnished Deep Cleaning', price: 7199, tag: 'Furnished', type: 'furnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+
+      { id: 'villa-sqft', cat: 'villa', name: 'Independent House / Villa Cleaning', price: 3, unitText: '₹3 / sq. ft.', tag: 'Per Sq.Ft', type: 'furnished', rooms: ['Balcony', 'Kitchen', 'Living Room', 'Bedroom', 'Bathroom'] },
+
+      { id: 'kitchen-deep', cat: 'single', name: 'Kitchen Deep Cleaning', price: 1499, tag: 'Kitchen', type: 'furnished', rooms: ['Kitchen'] },
+      { id: 'bathroom-deep', cat: 'single', name: 'Bathroom Deep Cleaning (1 Bath)', price: 599, tag: 'Bathroom', type: 'furnished', rooms: ['Bathroom'] },
+      { id: 'sofa-clean', cat: 'single', name: 'Sofa & Upholstery Cleaning', price: 999, tag: 'Living Room', type: 'furnished', rooms: ['Living Room'] },
+      { id: 'balcony-clean', cat: 'single', name: 'Balcony Deep Cleaning', price: 499, tag: 'Balcony', type: 'unfurnished', rooms: ['Balcony'] }
     ];
 
-    const allServices = {
-      '1bhk_unf': {
-        name: '1 BHK Unfurnished', price: 2499, oldPrice: 3500, discount: '28% Off', rating: '★ 4.78 (850K reviews)', category: 'package', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80',
-        subtitle: '1 Hall, 1 Kitchen, 1 Bath, 1 Balcony (Empty Flat)',
-        sections: unfurnishedDetails, count: 0
-      },
-      '1bhk_fur': {
-        name: '1 BHK Furnished', price: 3299, oldPrice: 4400, discount: '25% Off', rating: '★ 4.79 (1.1M reviews)', category: 'package', isFurnished: true,
-        img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
-        subtitle: '1 Hall, 1 Kitchen, 1 Bath, 1 Balcony (Furnished)',
-        sections: furnishedDetails, count: 0
-      },
-      '2bhk_unf': {
-        name: '2 BHK Unfurnished', price: 3299, oldPrice: 4800, discount: '30% Off', rating: '★ 4.79 (920K reviews)', category: 'package', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80',
-        subtitle: '2 Beds, 1 Hall, Kitchen, 2 Baths, 2 Balconies (Empty)',
-        sections: unfurnishedDetails, count: 0
-      },
-      '2bhk_fur': {
-        name: '2 BHK Furnished', price: 4499, oldPrice: 5600, discount: '20% Off', rating: '★ 4.82 (1.4M reviews)', category: 'package', isFurnished: true,
-        img: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=600&q=80',
-        subtitle: '2 Beds, Hall, Kitchen, 2 Baths, 2 Balconies (Furnished)',
-        sections: furnishedDetails, count: 0
-      },
-      '3bhk_unf': {
-        name: '3 BHK Unfurnished', price: 4499, oldPrice: 6000, discount: '25% Off', rating: '★ 4.80 (750K reviews)', category: 'package', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=600&q=80',
-        subtitle: '3 Beds, 1 Hall, Kitchen, 3 Baths, 3 Balconies (Empty)',
-        sections: unfurnishedDetails, count: 0
-      },
-      '3bhk_fur': {
-        name: '3 BHK Furnished', price: 5499, oldPrice: 7000, discount: '22% Off', rating: '★ 4.83 (890K reviews)', category: 'package', isFurnished: true,
-        img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=80',
-        subtitle: '3 Beds, Hall, Kitchen, 3 Baths, 3 Balconies (Furnished)',
-        sections: furnishedDetails, count: 0
-      },
-      '4bhk_unf': {
-        name: '4 BHK Unfurnished', price: 5499, oldPrice: 7500, discount: '26% Off', rating: '★ 4.81 (500K reviews)', category: 'package', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80',
-        subtitle: '4 Beds, Hall, Kitchen, 4 Baths, 4 Balconies (Empty)',
-        sections: unfurnishedDetails, count: 0
-      },
-      '4bhk_fur': {
-        name: '4 BHK Furnished', price: 6999, oldPrice: 9000, discount: '22% Off', rating: '★ 4.84 (620K reviews)', category: 'package', isFurnished: true,
-        img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80',
-        subtitle: '4 Beds, Hall, Kitchen, 4 Baths, 4 Balconies (Furnished)',
-        sections: furnishedDetails, count: 0
-      },
-      'villa_deep': {
-        name: 'Luxury Independent Villa Deep Cleaning', ratePerSqFt: 5, defaultSqFt: 1500, sqFt: 1500, isSqFtBased: true,
-        get price() { return this.sqFt * this.ratePerSqFt; }, oldPrice: '₹7 / sq.ft', discount: '₹5 / sq.ft', rating: '★ 4.85 (321K reviews)', category: 'villa', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80',
-        subtitle: 'Multi-Floor Independent House / Duplex Villa',
-        sections: {
-          'Full Villa Scope': [
-            'Calculated at ₹5 per sq.ft built-up area',
-            'Multi-floor single-disc rotary machine scrubbing',
-            'Terrace, open balconies & parking area pressure washed',
-            'All bathrooms deep descaled, tile scrubbed & chrome fixtures polished',
-            'Glass railings, window tracks & internal doors wiped clean'
-          ]
-        }, count: 0
-      },
-      'kitchen': {
-        name: 'Kitchen Deep Clean', price: 1499, oldPrice: 2000, discount: '25% Off', rating: '★ 4.80 (120K reviews)', category: 'single', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80',
-        subtitle: 'Chimney, stove, sink & tile degrease',
-        sections: {
-          'Kitchen Detailing': [
-            'Chimney outer hood & oil filter mesh degreased',
-            'Gas stove platform, burners & backsplash tiles carbon removal',
-            'Kitchen sink descaling & taps shined mirror-like',
-            'Cabinets exterior wiped down and handles polished'
-          ]
-        }, count: 0
-      },
-      'bathroom': {
-        name: 'Bathroom Deep Clean', price: 399, oldPrice: 600, discount: '33% Off', rating: '★ 4.82 (250K reviews)', category: 'single', isFurnished: false,
-        img: 'https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?auto=format&fit=crop&w=600&q=80',
-        subtitle: 'Tile descaling & commode deep wash',
-        sections: {
-          'Washroom Scope': [
-            'Wall & floor tile hard water descaling with rotary machine scrub',
-            'Commode internal & external deep stain wash and scale removal',
-            'Taps, shower head & chrome fixtures mirror polished',
-            'Mirror & exhaust fan streak-free wipe down'
-          ]
-        }, count: 0
-      },
-      'living': {
-        name: 'Living Room & Sofa', price: 699, oldPrice: 1000, discount: '30% Off', rating: '★ 4.81 (95K reviews)', category: 'single', isFurnished: true,
-        img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80',
-        subtitle: 'Sofa shampooing & floor polish',
-        sections: {
-          'Living Room Details': [
-            'Sofa deep vacuuming & foam shampoo spot treatment',
-            'Rotary machine floor scrub & buffing in living area',
-            'TV cabinet, coffee table & electronic surface dusting',
-            'Ceiling fans & lights wiped down'
-          ]
-        }, count: 0
-      },
-      'window': {
-        name: 'Window Glass & Grill', price: 199, oldPrice: 350, discount: '43% Off', rating: '★ 4.79 (60K reviews)', category: 'single', isFurnished: false,
-        img: 'https://drive.google.com/thumbnail?id=16X1IC9DCpwIJGpQGM49jEN-Kd5xVy4F1&sz=w800',
-        subtitle: 'Squeegee wiper & track suction',
-        sections: {
-          'Window Cleaning': [
-            'Industrial high-suction vacuum extraction of window slider tracks',
-            'Glass sprayed with streak-free solution & squeegee wiper finish',
-            'Window metal grills and frames wiped clean'
-          ]
-        }, count: 0
+    const peopleAlsoTakeIds = ['kitchen-deep', 'bathroom-deep', 'sofa-clean', 'balcony-clean', '2bhk-fu'];
+
+    let cart = {};
+    let verifiedPhone = '';
+    let generatedOtp = '';
+    let otpSent = false;
+
+    function formatPrice(item, qty = 1) {
+      if (item.id === 'villa-sqft') {
+        return qty > 1 ? `₹${item.price * qty} (${qty} sq.ft)` : '₹3 / sq.ft';
       }
-    };
-
-    let generatedAuthOtp = '';
-    let isUserAuthenticated = false;
-    let userVerifiedNumber = '';
-
-    function calcTotal() {
-      let total = 0;
-      Object.keys(allServices).forEach(k => {
-        if (allServices[k].count > 0) total += allServices[k].price * allServices[k].count;
-      });
-      quickAddons.forEach(a => {
-        if (a.count > 0) total += a.price * a.count;
-      });
-      return total;
+      return `₹${(item.price * qty).toLocaleString('en-IN')}`;
     }
 
-    function updateCartSummary() {
-      let count = 0;
-      Object.keys(allServices).forEach(k => { count += allServices[k].count; });
-      quickAddons.forEach(a => { count += a.count; });
+    function renderCatalog() {
+      const patContainer = document.getElementById('peopleAlsoTakeContainer');
+      const cartPatContainer = document.getElementById('cartPeopleAlsoTakeContainer');
+      const pkgContainer = document.getElementById('packagesContainer');
+      const villaContainer = document.getElementById('villaContainer');
+      const singleContainer = document.getElementById('singleServicesContainer');
 
-      const total = calcTotal();
-      const bar = document.getElementById('homeBottomBar');
+      const patItems = servicesCatalog.filter(s => peopleAlsoTakeIds.includes(s.id));
+      const patHtml = patItems.map(item => `
+        <div class="min-w-[155px] bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col justify-between shadow-2xs">
+          <div>
+            <span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">${item.tag}</span>
+            <p class="text-[11px] font-bold text-slate-900 mt-1.5 leading-snug line-clamp-2">${item.name}</p>
+          </div>
+          <div class="flex items-center justify-between mt-2.5 pt-1.5 border-t border-slate-100">
+            <span class="text-xs font-extrabold text-slate-900">${formatPrice(item)}</span>
+            <button onclick="addToCart('${item.id}')" type="button" class="bg-[#5c3cd6] text-white text-[10px] font-bold px-2.5 py-1 rounded-lg active:scale-95 transition">+ Add</button>
+          </div>
+        </div>
+      `).join('');
 
-      if (count > 0) {
-        bar.style.display = 'flex';
-        document.getElementById('bottomTotalPrice').textContent = `₹${total.toLocaleString('en-IN')}`;
-        document.getElementById('bottomItemCount').textContent = `${count} ${count === 1 ? 'service' : 'services'}`;
+      patContainer.innerHTML = patHtml;
+      cartPatContainer.innerHTML = patHtml;
+
+      const pkgs = servicesCatalog.filter(s => s.cat === 'pkg');
+      pkgContainer.innerHTML = pkgs.map(item => renderCardHtml(item)).join('');
+
+      const villas = servicesCatalog.filter(s => s.cat === 'villa');
+      villaContainer.innerHTML = villas.map(item => renderCardHtml(item, true)).join('');
+
+      const singles = servicesCatalog.filter(s => s.cat === 'single');
+      singleContainer.innerHTML = singles.map(item => renderCardHtml(item)).join('');
+
+      updateCartUI();
+    }
+
+    function renderCardHtml(item, isWide = false) {
+      const qty = cart[item.id] || 0;
+      return `
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 flex flex-col justify-between shadow-2xs ${isWide ? 'w-full' : ''}">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1.5">
+              <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-[#5c3cd6]">${item.tag}</span>
+              <button onclick="openDetailsModal('${item.id}')" type="button" class="text-[10px] font-bold text-slate-500 underline">Checklist</button>
+            </div>
+            <h3 class="text-xs font-bold text-slate-900 leading-snug">${item.name}</h3>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 pt-2 border-t border-slate-100">
+            <span class="text-xs sm:text-sm font-black text-slate-900">${formatPrice(item)}</span>
+            ${
+              qty === 0
+                ? `<button onclick="addToCart('${item.id}')" type="button" class="bg-[#5c3cd6] hover:bg-[#4d30b8] text-white text-[11px] font-bold px-3 py-1.5 rounded-xl active:scale-95 transition">Add</button>`
+                : `<div class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 rounded-xl px-1.5 py-1">
+                     <button onclick="changeQty('${item.id}', -1)" type="button" class="w-5 h-5 rounded-md bg-white text-[#5c3cd6] font-black text-xs flex items-center justify-center shadow-2xs">-</button>
+                     <span class="text-xs font-extrabold text-[#5c3cd6] min-w-[14px] text-center">${qty}</span>
+                     <button onclick="changeQty('${item.id}', 1)" type="button" class="w-5 h-5 rounded-md bg-[#5c3cd6] text-white font-black text-xs flex items-center justify-center shadow-2xs">+</button>
+                   </div>`
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    function addToCart(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      renderCatalog();
+    }
+
+    function changeQty(id, delta) {
+      const next = (cart[id] || 0) + delta;
+      if (next <= 0) {
+        delete cart[id];
       } else {
-        bar.style.display = 'none';
+        cart[id] = next;
+      }
+      renderCatalog();
+      renderCartScreen();
+    }
+
+    function getCartSummary() {
+      let totalQty = 0;
+      let totalAmount = 0;
+      const entries = [];
+
+      for (const [id, qty] of Object.entries(cart)) {
+        const item = servicesCatalog.find(s => s.id === id);
+        if (item && qty > 0) {
+          const lineTotal = item.price * qty;
+          totalQty += qty;
+          totalAmount += lineTotal;
+          entries.push({ item, qty, lineTotal });
+        }
+      }
+      return { totalQty, totalAmount, entries };
+    }
+
+    function updateCartUI() {
+      const { totalQty, totalAmount } = getCartSummary();
+      document.getElementById('navCartCount').innerText = totalQty;
+
+      const bottomBar = document.getElementById('homeBottomBar');
+      if (totalQty > 0) {
+        bottomBar.style.display = 'flex';
+        document.getElementById('bottomTotalPrice').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+        document.getElementById('bottomItemCount').innerText = `${totalQty} ${totalQty === 1 ? 'service' : 'services'}`;
+      } else {
+        bottomBar.style.display = 'none';
       }
 
-      document.getElementById('navCartCount').textContent = count;
-      const billTotal = document.getElementById('billFinalAmount');
-      if (billTotal) billTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
-      const itemTotal = document.getElementById('billItemTotal');
-      if (itemTotal) itemTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+      document.getElementById('billItemTotal').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+      document.getElementById('billFinalAmount').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+      document.getElementById('addressBillTotal').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
     }
 
-    function toggleQuickAddon(addonId) {
-      const addon = quickAddons.find(a => a.id === addonId);
-      if (!addon) return;
-      addon.count = addon.count > 0 ? 0 : 1;
-      renderPeopleAlsoTake();
-      renderCartScreenItems();
-      updateCartSummary();
+    function handleCartClick() {
+      const { totalQty } = getCartSummary();
+      if (totalQty === 0) {
+        alert('Please add at least one service first.');
+        return;
+      }
+      showCartScreen();
     }
 
-    function renderPeopleAlsoTake() {
-      const container1 = document.getElementById('peopleAlsoTakeContainer');
-      const container2 = document.getElementById('cartPeopleAlsoTakeContainer');
-      
-      let html = '';
-      quickAddons.forEach(item => {
-        const isAdded = item.count > 0;
-        html += `
-          <div class="min-w-[125px] w-[125px] bg-white border border-slate-200 rounded-xl p-2 flex flex-col justify-between shadow-2xs">
-            <img src="${item.img}" class="w-full h-16 object-cover rounded-lg mb-1">
-            <span class="text-[10px] font-bold text-slate-900 leading-tight block">${item.name}</span>
-            <span class="text-[9px] text-slate-400 mt-0.5 block">${item.rating}</span>
-            <div class="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
-              <span class="text-xs font-extrabold text-slate-900">₹${item.price}</span>
-              <button onclick="toggleQuickAddon('${item.id}')" type="button" class="text-[10px] font-bold px-2 py-0.5 rounded transition ${isAdded ? 'bg-[#5c3cd6] text-white' : 'text-[#5c3cd6] border border-slate-200'}">
-                ${isAdded ? '✓ Added' : 'Add'}
-              </button>
+    function showCatalogScreen() {
+      document.getElementById('cartScreen').classList.add('hidden');
+      document.getElementById('cartScreen').classList.remove('flex');
+      document.getElementById('addressScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.remove('flex');
+      document.getElementById('catalogScreen').classList.remove('hidden');
+      updateCartUI();
+    }
+
+    function showCartScreen() {
+      document.getElementById('catalogScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.remove('flex');
+      document.getElementById('cartScreen').classList.remove('hidden');
+      document.getElementById('cartScreen').classList.add('flex');
+      document.getElementById('homeBottomBar').style.display = 'none';
+      renderCartScreen();
+    }
+
+    function renderCartScreen() {
+      const { entries, totalAmount } = getCartSummary();
+      const container = document.getElementById('cartScreenItems');
+
+      if (entries.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">Your cart is empty.</p>`;
+      } else {
+        container.innerHTML = entries.map(({ item, qty, lineTotal }) => `
+          <div class="py-3 flex items-center justify-between gap-3">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">${item.name}</h4>
+              <span class="text-[11px] font-bold text-[#5c3cd6]">₹${lineTotal.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 rounded-xl px-1.5 py-1">
+              <button onclick="changeQty('${item.id}', -1)" type="button" class="w-5 h-5 rounded-md bg-white text-[#5c3cd6] font-black text-xs flex items-center justify-center">-</button>
+              <span class="text-xs font-extrabold text-[#5c3cd6] min-w-[14px] text-center">${qty}</span>
+              <button onclick="changeQty('${item.id}', 1)" type="button" class="w-5 h-5 rounded-md bg-[#5c3cd6] text-white font-black text-xs flex items-center justify-center">+</button>
             </div>
           </div>
-        `;
-      });
-
-      if (container1) container1.innerHTML = html;
-      if (container2) container2.innerHTML = html;
-    }
-
-    function openDetailsModal(key) {
-      const item = allServices[key];
-      if (!item) return;
-
-      document.getElementById('detailModalTitle').textContent = item.name;
-      document.getElementById('detailModalSubtitle').textContent = item.subtitle;
-      document.getElementById('detailModalPrice').textContent = `₹${item.price.toLocaleString('en-IN')}`;
-
-      const container = document.getElementById('detailSectionsContainer');
-      container.innerHTML = '';
-
-      if (item.sections) {
-        Object.keys(item.sections).forEach(room => {
-          let tasksHtml = '';
-          item.sections[room].forEach(t => {
-            tasksHtml += `<li class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold">✓</span><span>${t}</span></li>`;
-          });
-
-          const box = document.createElement('div');
-          box.className = 'bg-slate-50 border border-slate-200/80 rounded-xl p-2.5';
-          box.innerHTML = `
-            <span class="font-bold text-sky-800 text-[11px] block mb-1">• ${room}</span>
-            <ul class="space-y-1 text-[10.5px] text-slate-600 pl-1">${tasksHtml}</ul>
-          `;
-          container.appendChild(box);
-        });
+        `).join('');
       }
 
-      const notice = document.getElementById('furnishedNoticeBlock');
-      if (item.isFurnished) notice.classList.remove('hidden');
-      else notice.classList.add('hidden');
+      document.getElementById('billItemTotal').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+      document.getElementById('billFinalAmount').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+    }
 
+    function openDetailsModal(id) {
+      const item = servicesCatalog.find(s => s.id === id);
+      if (!item) return;
+
+      const dict = item.type === 'unfurnished' ? unfurnishedDetails : furnishedDetails;
+      document.getElementById('detailModalTitle').innerText = item.name;
+      document.getElementById('detailModalSubtitle').innerText = `Category: ${item.tag}`;
+      document.getElementById('detailModalPrice').innerText = formatPrice(item);
+
+      const sectionsHtml = item.rooms.map(room => {
+        const points = dict[room] || [];
+        return `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5">
+            <div class="font-bold text-slate-900 text-xs mb-1">${room}</div>
+            <ul class="list-disc pl-4 space-y-1 text-[11px] text-slate-600">
+              ${points.map(pt => `<li>${pt}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('detailSectionsContainer').innerHTML = sectionsHtml;
+      document.getElementById('furnishedNoticeBlock').classList.toggle('hidden', item.type !== 'furnished');
       document.getElementById('detailsModalBackdrop').classList.remove('hidden');
     }
 
@@ -618,109 +619,17 @@
       document.getElementById('detailsModalBackdrop').classList.add('hidden');
     }
 
-    function toggleService(key) {
-      if (!allServices[key]) return;
-      allServices[key].count = allServices[key].count > 0 ? 0 : 1;
-      renderCards();
-      updateCartSummary();
-    }
-
-    function handleCartClick() {
-      let count = 0;
-      Object.keys(allServices).forEach(k => { count += allServices[k].count; });
-      quickAddons.forEach(a => { count += a.count; });
-
-      if (count === 0) {
-        alert("Please add at least 1 service to your cart first.");
-        return;
-      }
-      showCartScreen();
-    }
-
-    function showCartScreen() {
-      document.getElementById('homeBottomBar').style.display = 'none';
-      renderCartScreenItems();
-      renderPeopleAlsoTake();
-      document.getElementById('catalogScreen').classList.add('hidden');
-      document.getElementById('addressScreen').classList.add('hidden');
-      document.getElementById('cartScreen').classList.remove('hidden');
-      document.getElementById('cartScreen').scrollTop = 0;
-    }
-
-    function showCatalogScreen() {
-      document.getElementById('cartScreen').classList.add('hidden');
-      document.getElementById('addressScreen').classList.add('hidden');
-      document.getElementById('catalogScreen').classList.remove('hidden');
-      updateCartSummary();
-    }
-
-    function backToCartFromAddress() {
-      document.getElementById('addressScreen').classList.add('hidden');
-      document.getElementById('cartScreen').classList.remove('hidden');
-    }
-
-    function renderCartScreenItems() {
-      const container = document.getElementById('cartScreenItems');
-      container.innerHTML = '';
-
-      Object.keys(allServices).forEach(key => {
-        const item = allServices[key];
-        if (item.count > 0) {
-          const div = document.createElement('div');
-          div.className = 'py-3 flex justify-between items-start';
-          div.innerHTML = `
-            <div>
-              <h4 class="text-xs font-bold text-slate-900">${item.name}</h4>
-              <p class="text-[11px] text-slate-500">• Full deep cleaning package x${item.count}</p>
-              <button onclick="openDetailsModal('${key}')" type="button" class="text-[11px] font-bold text-[#5c3cd6] mt-1 block">View details</button>
-            </div>
-            <div class="text-right">
-              <span class="text-xs font-bold text-slate-900 block">₹${(item.price * item.count).toLocaleString('en-IN')}</span>
-              <button onclick="allServices['${key}'].count = 0; renderCartScreenItems(); updateCartSummary(); renderCards();" type="button" class="text-rose-500 font-bold text-[10px] mt-1 bg-rose-50 px-2 py-0.5 rounded">Remove</button>
-            </div>
-          `;
-          container.appendChild(div);
-        }
-      });
-
-      quickAddons.forEach(addon => {
-        if (addon.count > 0) {
-          const div = document.createElement('div');
-          div.className = 'py-2.5 flex justify-between items-center text-xs';
-          div.innerHTML = `
-            <div>
-              <span class="font-bold text-slate-800 block">${addon.name}</span>
-              <span class="text-[10px] text-slate-400">Add-on service</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-slate-900">₹${addon.price}</span>
-              <button onclick="toggleQuickAddon('${addon.id}');" type="button" class="text-rose-500 text-[10px] bg-rose-50 px-1.5 py-0.5 rounded">✕</button>
-            </div>
-          `;
-          container.appendChild(div);
-        }
-      });
-
-      updateCartSummary();
-    }
-
     function openPhoneAuthModal() {
-      let count = 0;
-      Object.keys(allServices).forEach(k => { count += allServices[k].count; });
-      quickAddons.forEach(a => { count += a.count; });
-
-      if (count === 0) {
-        alert("Your cart is empty. Please select a service first.");
+      const { totalQty } = getCartSummary();
+      if (totalQty === 0) {
+        alert('Your cart is empty.');
         return;
       }
-
-      if (isUserAuthenticated) {
-        goToAddressScreen();
-        return;
-      }
-
+      otpSent = false;
+      generatedOtp = '';
       document.getElementById('sheetOtpBlock').classList.add('hidden');
-      document.getElementById('sheetContinueBtn').textContent = "Continue";
+      document.getElementById('sheetOtpInput').value = '';
+      document.getElementById('sheetContinueBtn').innerText = 'Continue';
       document.getElementById('phoneAuthModal').classList.remove('hidden');
     }
 
@@ -729,40 +638,86 @@
     }
 
     function handlePhoneAuthStep() {
-      const phone = document.getElementById('sheetPhoneInput').value.trim();
-      const otpBlock = document.getElementById('sheetOtpBlock');
-      const continueBtn = document.getElementById('sheetContinueBtn');
-
-      if (!/^\d{10}$/.test(phone)) {
-        alert("Please enter a valid 10-digit mobile number.");
-        document.getElementById('sheetPhoneInput').focus();
+      const phone = document.getElementById('sheetPhoneInput').value.replace(/\D/g, '');
+      if (phone.length !== 10) {
+        alert('Please enter a valid 10-digit mobile number.');
         return;
       }
 
-      if (otpBlock.classList.contains('hidden')) {
-        userVerifiedNumber = phone;
-        generatedAuthOtp = Math.floor(1000 + Math.random() * 9000).toString();
-        document.getElementById('sheetCodeDisplay').textContent = generatedAuthOtp;
-        otpBlock.classList.remove('hidden');
-        continueBtn.textContent = "Verify & Proceed to Address";
+      if (!otpSent) {
+        generatedOtp = String(Math.floor(1000 + Math.random() * 9000));
+        document.getElementById('sheetCodeDisplay').innerText = generatedOtp;
+        document.getElementById('sheetOtpBlock').classList.remove('hidden');
+        document.getElementById('sheetContinueBtn').innerText = 'Verify & Proceed';
+        otpSent = true;
         return;
       }
 
-      const entered = document.getElementById('sheetOtpInput').value.trim();
-      if (entered === generatedAuthOtp) {
-        isUserAuthenticated = true;
-        closePhoneAuthModal();
-        goToAddressScreen();
-      } else {
-        alert("Incorrect verification code. Please check the 4-digit code shown.");
+      const enteredOtp = document.getElementById('sheetOtpInput').value.trim();
+      if (enteredOtp !== generatedOtp) {
+        alert('Code does not match. Please check the 4-digit code.');
+        return;
       }
+
+      verifiedPhone = `+91 ${phone}`;
+      closePhoneAuthModal();
+      showAddressScreen();
     }
 
-    function goToAddressScreen() {
+    function showAddressScreen() {
       document.getElementById('cartScreen').classList.add('hidden');
+      document.getElementById('cartScreen').classList.remove('flex');
       document.getElementById('addressScreen').classList.remove('hidden');
-      document.getElementById('displayVerifiedPhone').textContent = '+91 ' + userVerifiedNumber;
-      document.getElementById('addressBillTotal').textContent = `₹${calcTotal().toLocaleString('en-IN')}`;
+      document.getElementById('addressScreen').classList.add('flex');
+      document.getElementById('displayVerifiedPhone').innerText = verifiedPhone;
+
+      const dateInput = document.getElementById('custDate');
+      if (!dateInput.value) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateInput.value = tomorrow.toISOString().split('T')[0];
+      }
+      updateCartUI();
+    }
+
+    function backToCartFromAddress() {
+      document.getElementById('addressScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.remove('flex');
+      showCartScreen();
+    }
+
+    function fetchCurrentLocation(event) {
+      if (event) event.preventDefault();
+      const addrField = document.getElementById('custAddr');
+      const statusEl = document.getElementById('locStatus');
+      const btnText = document.getElementById('locBtnText');
+
+      if (!navigator.geolocation) {
+        statusEl.innerText = 'GPS not supported on this device.';
+        statusEl.classList.remove('hidden');
+        return;
+      }
+
+      btnText.innerText = 'Fetching...';
+      statusEl.innerText = 'Getting your GPS location...';
+      statusEl.classList.remove('hidden');
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(6);
+          const lng = pos.coords.longitude.toFixed(6);
+          const mapLink = `https://maps.google.com/?q=${lat},${lng}`;
+          addrField.value = addrField.value.trim()
+            ? `${addrField.value.trim()} (${mapLink})`
+            : mapLink;
+          btnText.innerText = 'Location Added';
+          statusEl.innerText = 'GPS location added.';
+        },
+        () => {
+          btnText.innerText = 'Current Location';
+          statusEl.innerText = 'Unable to fetch GPS. Please type your address manually.';
+        }
+      );
     }
 
     function sendFinalWhatsAppBooking() {
@@ -770,226 +725,31 @@
       const date = document.getElementById('custDate').value;
       const slot = document.getElementById('custSlot').value;
       const addr = document.getElementById('custAddr').value.trim();
-      const total = `₹${calcTotal().toLocaleString('en-IN')}`;
+      const { entries, totalAmount } = getCartSummary();
 
-      if (!name) {
-        alert("Please enter your Full Name.");
-        document.getElementById('custName').focus();
-        return;
-      }
-      if (!addr) {
-        alert("Please enter your complete service address.");
-        document.getElementById('custAddr').focus();
+      if (!name || !addr || entries.length === 0) {
+        alert('Please fill in your name, address, and ensure services are in the cart.');
         return;
       }
 
-      const items = [];
-      Object.keys(allServices).forEach(k => {
-        if (allServices[k].count > 0) items.push(`${allServices[k].name} (Qty: ${allServices[k].count})`);
-      });
-      quickAddons.forEach(a => {
-        if (a.count > 0) items.push(`${a.name} (₹${a.price})`);
-      });
+      const itemsText = entries
+        .map(({ item, qty, lineTotal }) => `• ${item.name} x${qty} = ₹${lineTotal.toLocaleString('en-IN')}`)
+        .join('\n');
 
-      const text = `*New Cleaning Booking - A2Z Home Deep Cleaning*\n\n` +
-                   `👤 *Customer Name:* ${name}\n` +
-                   `📱 *Verified Phone:* ${userVerifiedNumber}\n` +
-                   `🧹 *Booked Services:*\n• ${items.join('\n• ')}\n\n` +
-                   `💰 *Total Amount:* ${total}\n` +
-                   `📅 *Date:* ${date}\n` +
-                   `🕒 *Joining Time:* ${slot}\n` +
-                   `📍 *Address:*\n${addr}`;
+      const message =
+        `Hello A2Z Home Deep Cleaning,\n\n` +
+        `New Booking Request:\n` +
+        `Name: ${name}\n` +
+        `Phone: ${verifiedPhone}\n` +
+        `Date & Time: ${date} (${slot})\n` +
+        `Address: ${addr}\n\n` +
+        `Services:\n${itemsText}\n\n` +
+        `Total Amount: ₹${totalAmount.toLocaleString('en-IN')}`;
 
-      window.open(`https://wa.me/918686932203?text=${encodeURIComponent(text)}`, '_blank');
+      window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
-    function fetchCurrentLocation(e) {
-      if (e) e.preventDefault();
-
-      const locBtnText = document.getElementById('locBtnText');
-      const addrBox = document.getElementById('custAddr');
-      const locStatus = document.getElementById('locStatus');
-
-      locBtnText.textContent = "Detecting...";
-      locStatus.classList.remove('hidden');
-      locStatus.className = "text-[10px] text-sky-600 mt-1 font-semibold";
-      locStatus.textContent = "Getting accurate GPS location...";
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude.toFixed(6);
-            const lng = position.coords.longitude.toFixed(6);
-            const accuracy = Math.round(position.coords.accuracy || 0);
-            const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-            
-            const currentText = addrBox.value.replace(/Google Maps:.*(\r?\n)*/g, '').trim();
-            addrBox.value = `Google Maps:\n${mapsLink}\n\n${currentText ? currentText : 'Flat/Door No & Area: '}`;
-            
-            locBtnText.textContent = "Detected ✓";
-            locStatus.className = "text-[10px] text-emerald-600 mt-1 font-bold";
-            locStatus.textContent = accuracy ? `✓ GPS located (~${accuracy}m). Add Flat/House no.` : "✓ Current GPS Location added! Please add Flat/House no.";
-            addrBox.focus();
-          },
-          (error) => {
-            fetchFallbackCoordinates(error);
-          },
-          { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
-        );
-      } else {
-        fetchFallbackCoordinates({ code: 0 });
-      }
-    }
-
-    function fetchFallbackCoordinates(error) {
-      const locBtnText = document.getElementById('locBtnText');
-      const addrBox = document.getElementById('custAddr');
-      const locStatus = document.getElementById('locStatus');
-
-      locBtnText.textContent = "Retry GPS";
-      locStatus.classList.remove('hidden');
-      locStatus.className = "text-[10px] text-amber-700 mt-1 font-semibold";
-
-      if (error && error.code === 1) {
-        locStatus.textContent = "Location permission denied. Please allow Location in browser/phone or type your area below.";
-      } else {
-        locStatus.textContent = "Could not get exact GPS lock. Please turn on Location/GPS and try again or type area manually.";
-      }
-      addrBox.focus();
-    }
-
-    function updateVillaSqFt(key, newSqFt) {
-      const val = parseInt(newSqFt) || 500;
-      allServices[key].sqFt = val;
-      const priceDisplay = document.getElementById(`price-display-${key}`);
-      if (priceDisplay) {
-        priceDisplay.textContent = `₹${allServices[key].price.toLocaleString('en-IN')}`;
-      }
-      updateCartSummary();
-    }
-
-    function renderCards() {
-      const pkgContainer = document.getElementById('packagesContainer');
-      const singleContainer = document.getElementById('singleServicesContainer');
-      const villaContainer = document.getElementById('villaContainer');
-      
-      pkgContainer.innerHTML = '';
-      singleContainer.innerHTML = '';
-      villaContainer.innerHTML = '';
-
-      Object.keys(allServices).forEach(key => {
-        const item = allServices[key];
-
-        if (item.category === 'villa') {
-          const villaCard = document.createElement('div');
-          villaCard.className = 'bg-gradient-to-b from-sky-50/80 to-white rounded-2xl border border-sky-200 overflow-hidden shadow-xs';
-          villaCard.innerHTML = `
-            <div class="relative cursor-pointer" onclick="openDetailsModal('${key}')">
-              <img src="${item.img}" alt="${item.name}" class="w-full h-36 object-cover">
-              <span class="absolute top-2 right-2 bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shadow">BEST FOR LARGE HOUSES</span>
-            </div>
-            <div class="p-3.5 space-y-3">
-              <div>
-                <div class="flex items-baseline justify-between">
-                  <h3 class="text-sm font-bold text-slate-900 leading-tight">${item.name}</h3>
-                  <span class="text-xs font-black text-sky-700">₹5 / sq.ft</span>
-                </div>
-                <p class="text-[10px] text-slate-500 font-medium mt-0.5">${item.rating}</p>
-                <p class="text-[10px] text-slate-400 mt-0.5">${item.subtitle}</p>
-              </div>
-              <div class="p-2.5 bg-sky-50/60 border border-sky-100 rounded-xl flex items-center justify-between gap-3">
-                <span class="text-[11px] font-semibold text-slate-700">Enter Built-up Area:</span>
-                <div class="flex items-center gap-1.5 w-36">
-                  <input type="number" step="100" min="500" value="${item.sqFt}" oninput="updateVillaSqFt('${key}', this.value)" class="w-full text-xs font-bold px-2.5 py-1 bg-white border border-sky-200 rounded-lg text-slate-900 text-right">
-                  <span class="text-xs font-bold text-slate-500">sq.ft</span>
-                </div>
-              </div>
-              <button onclick="openDetailsModal('${key}')" type="button" class="w-full text-center py-1.5 text-[11px] font-bold text-sky-700 bg-sky-50/70 rounded-lg border border-sky-200/80">
-                View details
-              </button>
-              <div class="flex items-center justify-between pt-2.5 border-t border-sky-100">
-                <div>
-                  <span class="text-[10px] text-slate-400 block leading-none">Estimated Total</span>
-                  <span id="price-display-${key}" class="text-sm font-black text-slate-900">₹${item.price.toLocaleString('en-IN')}</span>
-                </div>
-                <button onclick="toggleService('${key}');" type="button" class="text-xs font-bold px-4 py-1.5 rounded-full ${item.count > 0 ? 'bg-sky-700 text-white' : 'bg-sky-100/80 text-sky-900'} border border-sky-200">
-                  ${item.count > 0 ? 'Added ✓' : '+ Add Villa Clean'}
-                </button>
-              </div>
-            </div>
-          `;
-          villaContainer.appendChild(villaCard);
-          return;
-        }
-
-        const isPkg = item.category === 'package';
-        const cardTintClass = isPkg
-          ? (item.isFurnished
-              ? 'bg-gradient-to-b from-teal-50/75 to-white border-teal-200/90'
-              : 'bg-gradient-to-b from-sky-50/80 to-white border-sky-200/90')
-          : 'bg-white border-slate-200';
-        const detailBtnClass = isPkg
-          ? (item.isFurnished
-              ? 'text-teal-700 bg-teal-50/70 border-teal-200/80'
-              : 'text-sky-700 bg-sky-50/70 border-sky-200/80')
-          : 'text-[#5c3cd6] bg-slate-50 border-slate-200';
-        const addBtnClass = item.count > 0
-          ? (isPkg ? (item.isFurnished ? 'bg-teal-700 text-white' : 'bg-sky-700 text-white') : 'bg-[#5c3cd6] text-white')
-          : (isPkg ? (item.isFurnished ? 'bg-teal-100/80 text-teal-900 border-teal-200' : 'bg-sky-100/80 text-sky-900 border-sky-200') : 'bg-slate-100 text-slate-800 border-slate-200');
-
-        const card = document.createElement('div');
-        card.className = `${cardTintClass} rounded-xl border overflow-hidden shadow-2xs flex flex-col justify-between`;
-
-        card.innerHTML = `
-          <div class="relative cursor-pointer" onclick="openDetailsModal('${key}')">
-            <img src="${item.img}" alt="${item.name}" class="w-full h-28 object-cover">
-            <span class="absolute top-1.5 right-1.5 bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow">${item.discount}</span>
-          </div>
-          <div class="p-2.5 flex flex-col flex-grow justify-between">
-            <div class="cursor-pointer" onclick="openDetailsModal('${key}')">
-              <h3 class="text-xs font-bold text-slate-900 leading-tight">${item.name}</h3>
-              <p class="text-[10px] text-slate-500 font-semibold mt-0.5">${item.rating}</p>
-              <p class="text-[9px] text-slate-400 mt-0.5 line-clamp-1">${item.subtitle}</p>
-            </div>
-
-            <button onclick="openDetailsModal('${key}')" type="button" class="mt-2 py-1 text-[9.5px] font-bold ${detailBtnClass} rounded border">
-              View details
-            </button>
-
-            <div class="mt-2.5 flex items-center justify-between pt-1.5 border-t border-slate-100">
-              <div>
-                <span class="text-xs font-extrabold text-slate-900">₹${item.price.toLocaleString('en-IN')}</span>
-                <span class="text-[9px] text-slate-400 line-through block leading-none">₹${item.oldPrice.toLocaleString('en-IN')}</span>
-              </div>
-              <button onclick="toggleService('${key}');" type="button" class="text-[11px] font-bold px-3 py-1 rounded-full ${addBtnClass} border">
-                ${item.count > 0 ? '✓' : '+ Add'}
-              </button>
-            </div>
-          </div>
-        `;
-
-        if (item.category === 'package') pkgContainer.appendChild(card);
-        else singleContainer.appendChild(card);
-      });
-    }
-
-    const datePicker = document.getElementById('custDate');
-    const today = new Date();
-    datePicker.min = today.toISOString().split('T')[0];
-    datePicker.value = today.toISOString().split('T')[0];
-
-    renderPeopleAlsoTake();
-    renderCards();
-    updateCartSummary();
-  </script>
-
-  <!-- Google tag (gtag.js) - Added successfully -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18516875102"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-18516875102');
+    renderCatalog();
   </script>
 </body>
 </html>
