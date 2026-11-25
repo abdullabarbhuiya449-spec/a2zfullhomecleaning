@@ -40,7 +40,7 @@
 
   <div class="app-container">
 
-    <!-- ১. হেডার -->
+    <!-- HEADER -->
     <header class="flex-shrink-0 bg-white border-b border-slate-200 px-3 py-2 flex items-center justify-between shadow-xs z-30">
       <div class="flex items-center gap-2">
         <img src="https://drive.google.com/thumbnail?id=1ZBS0NJf_-hbgESYJeSIL7lH9BjShriID&sz=w200" onerror="this.onerror=null;this.src='https://placehold.co/80x80/0d6efd/ffffff?text=A2Z';" alt="A2Z Home Deep Cleaning Logo" class="w-8 h-8 rounded-lg object-cover shadow-xs bg-white border border-slate-100">
@@ -61,7 +61,7 @@
       </div>
     </header>
 
-    <!-- ২. স্ক্রোলযোগ্য ক্যাটালগ বডি -->
+    <!-- CATALOG BODY -->
     <div id="catalogScreen" class="app-scrollable-body">
       <div class="px-4 py-2 bg-slate-100/70 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-600">
         <span class="font-bold">Full Home / By Room Cleaning</span>
@@ -93,7 +93,7 @@
       </main>
     </div>
 
-    <!-- ৩. নিচে আটকে থাকা কার্ট বার -->
+    <!-- BOTTOM VIEW CART BAR -->
     <div id="homeBottomBar" style="display: none;" class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 px-4 py-3 shadow-[0_-8px_25px_rgba(0,0,0,0.18)] flex items-center justify-between max-w-xl mx-auto">
       <div>
         <span id="bottomTotalPrice" class="text-base font-black text-slate-900 block leading-tight">₹0</span>
@@ -105,7 +105,7 @@
       </button>
     </div>
 
-    <!-- ================= 2. YOUR CART SCREEN ================= -->
+    <!-- YOUR CART SCREEN -->
     <div id="cartScreen" class="app-scrollable-body bg-white hidden flex-col justify-between">
       <div class="flex flex-col min-h-full">
         <header class="sticky top-0 z-30 bg-white border-b border-slate-100 px-4 py-3 flex items-center gap-3">
@@ -120,13 +120,11 @@
 
           <div id="cartScreenItems" class="divide-y divide-slate-100"></div>
 
-          <!-- People Also Take in Cart -->
           <div class="pt-2 border-t border-slate-100">
             <h4 class="text-xs font-bold text-slate-800 mb-2">People also take</h4>
             <div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1" id="cartPeopleAlsoTakeContainer"></div>
           </div>
 
-          <!-- Coupons and offers -->
           <div class="border-t border-slate-100 pt-2 flex items-center justify-between text-xs text-slate-700">
             <div class="flex items-center gap-2">
               <span>🏷️</span>
@@ -135,7 +133,6 @@
             <span class="text-emerald-600 font-bold text-[11px]">APPLIED ✓</span>
           </div>
 
-          <!-- Bill Summary -->
           <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">
             <h3 class="font-bold text-slate-900 text-xs mb-1">Bill Summary</h3>
             <div class="flex justify-between text-slate-500">
@@ -161,7 +158,7 @@
       </div>
     </div>
 
-    <!-- ================= 3. SCHEDULE & ADDRESS SCREEN ================= -->
+    <!-- SCHEDULE & ADDRESS SCREEN -->
     <div id="addressScreen" class="app-scrollable-body bg-white hidden flex-col justify-between">
       <div class="flex flex-col min-h-full">
         <header class="sticky top-0 z-30 bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between">
@@ -235,7 +232,7 @@
 
   </div>
 
-  <!-- ================= POPUP: SCOPE OF WORK MODAL ================= -->
+  <!-- POPUP: SCOPE OF WORK MODAL -->
   <div id="detailsModalBackdrop" class="fixed inset-0 z-50 bg-black/60 hidden transition-opacity flex flex-col justify-end">
     <div class="bg-white rounded-t-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden max-w-md mx-auto w-full">
       <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
@@ -269,7 +266,7 @@
     </div>
   </div>
 
-  <!-- ================= POPUP: ENTER PHONE NUMBER SHEET ================= -->
+  <!-- POPUP: ENTER PHONE NUMBER SHEET -->
   <div id="phoneAuthModal" class="fixed inset-0 z-50 bg-black/60 hidden transition-opacity flex flex-col justify-end">
     <div class="bg-white rounded-t-3xl p-5 shadow-2xl max-w-md mx-auto w-full space-y-4">
       <div class="flex items-center justify-between">
@@ -312,8 +309,6 @@
       </p>
     </div>
   </div>
-
-  <!-- ================= JAVASCRIPT ================= -->
   <script>
     const BUSINESS_WHATSAPP = "918686932203";
     const FALLBACK_IMG = "https://placehold.co/600x400/e0e7ff/3730a3?text=A2Z+Deep+Cleaning";
@@ -840,4 +835,3 @@
   </script>
 </body>
 </html>
-
