@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>A2Z Home Deep Cleaning - Cleaning Services</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ফ্রেমের উচ্চতা স্ক্রিনের সমান রাখা */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8fafc;
+  }
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  /* ভেতরের কন্টেন্ট শুধু স্ক্রল হবে, হেডার ও কার্ট বার সরবে না */
+  .app-scrollable-body {
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 85px;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <div class="app-container">
+
+    <!-- ১. হেডার: এটি একদম উপরে স্থায়ী হয়ে আটকে থাকবে, সরবে না -->
+    <header class="flex-shrink-0 bg-white border-b border-slate-200 px-3 py-2 flex items-center justify-between shadow-xs z-30">
+      <div class="flex items-center gap-2">
+        <img src="https://drive.google.com/thumbnail?id=1ZBS0NJf_-hbgESYJeSIL7lH9BjShriID&sz=w200" alt="A2Z Home Deep Cleaning Logo" class="w-8 h-8 rounded-lg object-cover shadow-xs bg-white border border-slate-100">
+        <div>
+          <h1 class="text-xs sm:text-sm font-bold leading-tight text-slate-900">A2Z Home Deep Cleaning</h1>
+          <p class="text-[9px] text-slate-400 font-medium">Cleaning Services • Hyderabad</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <a href="tel:+918686932203" class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-sm shadow-xs hover:bg-emerald-100 transition active:scale-95">📞</a>
+        <a href="https://wa.me/918686932203?text=Hello%20A2Z%20Home%20Deep%20Cleaning" target="_blank" class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm shadow-xs hover:bg-emerald-600 transition active:scale-95">💬</a>
+        <button onclick="handleCartClick()" type="button" class="relative bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1 transition">
+          <span>🛒</span>
+          <span class="hidden sm:inline">Cart</span>
+          <span id="navCartCount" class="bg-[#5c3cd6] text-white text-[10px] font-bold px-1.5 rounded-full">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ২. স্ক্রোলযোগ্য ক্যাটালগ বডি -->
+    <div id="catalogScreen" class="app-scrollable-body">
+      <div class="px-4 py-2 bg-slate-100/70 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-600">
+        <span class="font-bold">Full Home / By Room Cleaning</span>
+        <span class="text-slate-500 text-[10px]">⚡ Earliest slot: Tomorrow, 8:00 AM</span>
+      </div>
+
+      <!-- People also take -->
+      <div class="pt-3 px-3">
+        <h3 class="text-xs font-bold text-slate-800 mb-2">People also take</h3>
+        <div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1" id="peopleAlsoTakeContainer"></div>
+      </div>
+
+      <!-- Main Packages Grid -->
+      <main class="max-w-xl mx-auto px-2.5 pt-3 pb-6 space-y-5">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 mb-2.5 px-0.5">Full Home & Post-Construction Deep Cleaning</h2>
+          <div class="grid grid-cols-2 gap-2.5" id="packagesContainer"></div>
+        </div>
+
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 mb-2.5 px-0.5">Independent Villa Deep Cleaning</h2>
+          <div id="villaContainer"></div>
+        </div>
+
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 mb-2.5 px-0.5">Kitchen & Individual Services</h2>
+          <div class="grid grid-cols-2 gap-2.5" id="singleServicesContainer"></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ৩. নিচে আটকে থাকা কার্ট বার: কোনো সার্ভিস সিলেক্ট করলে এখানেই ভেসে উঠবে -->
+    <div id="homeBottomBar" style="display: none;" class="absolute bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-4 py-3 shadow-[0_-8px_25px_rgba(0,0,0,0.18)] flex items-center justify-between max-w-xl mx-auto">
+      <div>
+        <span id="bottomTotalPrice" class="text-base font-black text-slate-900 block leading-tight">₹0</span>
+        <span id="bottomItemCount" class="text-[10px] text-slate-500 font-medium">0 services</span>
+      </div>
+      <button onclick="handleCartClick()" type="button" class="bg-[#5c3cd6] hover:bg-[#4d30b8] text-white font-bold px-7 py-2.5 rounded-xl text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md active:scale-95 transition">
+        <span>View Cart</span>
+        <span>➔</span>
+      </button>
+    </div>
+
+    <!-- ================= 2. YOUR CART SCREEN ================= -->
+    <div id="cartScreen" class="app-scrollable-body bg-white hidden flex-col justify-between">
+      <div class="flex flex-col min-h-full">
+        <header class="sticky top-0 z-30 bg-white border-b border-slate-100 px-4 py-3 flex items-center gap-3">
+          <button onclick="showCatalogScreen()" type="button" class="text-slate-700 hover:text-black font-extrabold text-base p-1 -ml-1">
+            ←
+          </button>
+          <h2 class="text-sm font-bold text-slate-900">Your cart</h2>
+        </header>
+
+        <main class="max-w-md mx-auto px-4 pt-3 space-y-4 flex-1">
+          <span class="text-[11px] text-slate-400 block font-medium">Full Home/ By Room Cleaning</span>
+          
+          <div id="cartScreenItems" class="divide-y divide-slate-100"></div>
+
+          <!-- People Also Take in Cart -->
+          <div class="pt-2 border-t border-slate-100">
+            <h4 class="text-xs font-bold text-slate-800 mb-2">People also take</h4>
+            <div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1" id="cartPeopleAlsoTakeContainer"></div>
+          </div>
+
+          <!-- Coupons and offers -->
+          <div class="border-t border-slate-100 pt-2 flex items-center justify-between text-xs text-slate-700">
+            <div class="flex items-center gap-2">
+              <span>🏷️</span>
+              <span class="font-bold">Coupons and offers</span>
+            </div>
+            <span class="text-emerald-600 font-bold text-[11px]">APPLIED ✓</span>
+          </div>
+
+          <!-- Bill Summary -->
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2 text-xs">
+            <h3 class="font-bold text-slate-900 text-xs mb-1">Bill Summary</h3>
+            <div class="flex justify-between text-slate-500">
+              <span>Item Total</span>
+              <span id="billItemTotal" class="font-semibold text-slate-700">₹0</span>
+            </div>
+            <div class="flex justify-between text-slate-500">
+              <span>Taxes & Equipment Charges</span>
+              <span class="text-emerald-600 font-semibold">FREE</span>
+            </div>
+            <div class="border-t border-slate-200 pt-2 flex justify-between font-extrabold text-sm text-slate-900">
+              <span>Total Amount</span>
+              <span id="billFinalAmount" class="text-[#5c3cd6]">₹0</span>
+            </div>
+          </div>
+        </main>
+
+        <div class="sticky bottom-0 z-40 bg-white border-t border-slate-200 p-3 shadow-md max-w-md mx-auto w-full mt-4">
+          <button onclick="openPhoneAuthModal()" type="button" class="w-full bg-[#5c3cd6] hover:bg-[#4d30b8] text-white font-bold py-3.5 rounded-xl text-xs tracking-wide shadow-md active:scale-95 transition">
+            Login/Sign up to proceed
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 3. SCHEDULE & ADDRESS SCREEN ================= -->
+    <div id="addressScreen" class="app-scrollable-body bg-white hidden flex-col justify-between">
+      <div class="flex flex-col min-h-full">
+        <header class="sticky top-0 z-30 bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button onclick="backToCartFromAddress()" type="button" class="text-slate-700 hover:text-black font-extrabold text-base p-1 -ml-1">
+              ←
+            </button>
+            <h2 class="text-sm font-bold text-slate-900">Delivery Address & Schedule</h2>
+          </div>
+          <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">✓ Verified</span>
+        </header>
+
+        <main class="max-w-md mx-auto px-4 pt-4 space-y-4 text-xs flex-1">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex justify-between items-center">
+            <div>
+              <span class="text-[11px] text-slate-500 block">Verified Mobile</span>
+              <span id="displayVerifiedPhone" class="font-bold text-slate-900"></span>
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-500 block text-right">Payable Bill</span>
+              <span id="addressBillTotal" class="font-black text-[#5c3cd6] text-sm"></span>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">Your Full Name</label>
+              <input type="text" id="custName" required placeholder="Enter full name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#5c3cd6]">
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Service Date</label>
+                <input type="date" id="custDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#5c3cd6]">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">Arrival Time</label>
+                <select id="custSlot" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#5c3cd6]">
+                  <option value="08:00 AM">08:00 AM</option>
+                  <option value="09:00 AM" selected>09:00 AM</option>
+                  <option value="10:00 AM">10:00 AM</option>
+                  <option value="11:00 AM">11:00 AM</option>
+                  <option value="12:00 PM">12:00 PM</option>
+                  <option value="02:00 PM">02:00 PM</option>
+                  <option value="04:00 PM">04:00 PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-[11px] font-bold text-slate-700">Complete Address</label>
+                <button onclick="fetchCurrentLocation(event)" type="button" id="locBtn" class="text-[10px] font-bold text-sky-700 bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-full flex items-center gap-1 active:scale-95">
+                  <span>📍</span>
+                  <span id="locBtnText">Current Location</span>
+                </button>
+              </div>
+              <textarea id="custAddr" rows="3" required placeholder="Flat / House No, Landmark, Area (Hyderabad)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#5c3cd6]"></textarea>
+              <p id="locStatus" class="text-[10px] text-slate-500 mt-1 hidden"></p>
+            </div>
+          </div>
+        </main>
+
+        <div class="sticky bottom-0 z-40 bg-white border-t border-slate-200 p-4 shadow-md max-w-md mx-auto w-full mt-4">
+          <button onclick="sendFinalWhatsAppBooking()" type="button" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-md active:scale-95 transition">
+            Confirm Booking via WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= POPUP: SCOPE OF WORK MODAL ================= -->
+  <div id="detailsModalBackdrop" class="fixed inset-0 z-50 bg-black/60 hidden transition-opacity flex flex-col justify-end">
+    <div class="bg-white rounded-t-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden max-w-md mx-auto w-full">
+      <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+        <h3 id="detailModalTitle" class="text-xs font-bold text-slate-900"></h3>
+        <button onclick="closeDetailsModal()" type="button" class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">✕</button>
+      </div>
+
+      <div class="overflow-y-auto p-4 space-y-3.5 text-xs no-scrollbar flex-grow">
+        <div class="flex items-baseline justify-between">
+          <span id="detailModalSubtitle" class="text-[11px] text-slate-500 font-medium"></span>
+          <span id="detailModalPrice" class="text-sm font-black text-slate-900"></span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold text-slate-900 mb-2">Detailed Scope of Work (What's Included):</h4>
+          <div id="detailSectionsContainer" class="space-y-2"></div>
+        </div>
+
+        <div id="furnishedNoticeBlock" class="hidden bg-amber-50 border border-amber-300 rounded-xl p-2.5 text-[10.5px] text-slate-800 space-y-1">
+          <span class="font-bold text-amber-800 block">⚠️ Note on Cupboards & Wardrobes:</span>
+          <p>Interior cleaning of wardrobes and cabinets is <strong>NOT included</strong> in standard furnished package.</p>
+          <p class="font-semibold text-slate-700">👉 To clean inside wardrobes or cabinets, please Call or WhatsApp us to discuss and fix a custom rate.</p>
+        </div>
+      </div>
+
+      <div class="p-3.5 border-t border-slate-100 bg-white">
+        <button onclick="closeDetailsModal()" type="button" class="w-full bg-[#5c3cd6] hover:bg-[#4d30b8] text-white font-bold py-2.5 rounded-xl text-xs shadow-md active:scale-95 transition">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= POPUP: ENTER PHONE NUMBER SHEET ================= -->
+  <div id="phoneAuthModal" class="fixed inset-0 z-50 bg-black/60 hidden transition-opacity flex flex-col justify-end">
+    <div class="bg-white rounded-t-3xl p-5 shadow-2xl max-w-md mx-auto w-full space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img src="https://drive.google.com/thumbnail?id=1ZBS0NJf_-hbgESYJeSIL7lH9BjShriID&sz=w200" alt="A2Z Home Deep Cleaning Logo" class="w-8 h-8 rounded-lg object-cover shadow-xs bg-white border border-slate-100">
+          <div>
+            <span class="text-xs font-black text-slate-900 leading-none block">A2Z Home Deep Cleaning</span>
+            <span class="text-[9px] text-slate-400 font-medium">Cleaning Services</span>
+          </div>
+        </div>
+        <button onclick="closePhoneAuthModal()" type="button" class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">✕</button>
+      </div>
+
+      <div>
+        <h3 class="text-base font-extrabold text-slate-900 leading-snug">Enter your phone number</h3>
+        <p class="text-[11px] text-slate-500 mt-0.5">We'll send you a 4-digit verification code to confirm booking.</p>
+      </div>
+
+      <div>
+        <div class="flex">
+          <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-300 bg-slate-50 text-slate-700 text-xs font-bold">+91 ▾</span>
+          <input type="tel" id="sheetPhoneInput" maxlength="10" placeholder="Enter your phone number" class="w-full bg-slate-50 border border-slate-300 rounded-r-xl px-3 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#5c3cd6]">
+        </div>
+      </div>
+
+      <div id="sheetOtpBlock" class="hidden space-y-2 pt-1">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 text-center">
+          <span class="text-[10.5px] text-emerald-800 font-semibold block">Your 4-Digit Code is:</span>
+          <span id="sheetCodeDisplay" class="text-lg font-black text-emerald-900 tracking-widest">----</span>
+        </div>
+        <input type="tel" id="sheetOtpInput" maxlength="4" placeholder="Enter 4-digit code" class="w-full text-center bg-slate-50 border border-slate-300 rounded-xl py-2 text-sm font-black tracking-widest text-slate-900 focus:outline-none focus:border-[#5c3cd6]">
+      </div>
+
+      <button id="sheetContinueBtn" onclick="handlePhoneAuthStep()" type="button" class="w-full bg-[#5c3cd6] hover:bg-[#4d30b8] text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider shadow-md active:scale-95 transition">
+        Continue
+      </button>
+
+      <p class="text-[9.5px] text-slate-400 text-center">
+        By continuing, you agree to our <span class="underline">T&C</span> and <span class="underline">Privacy policy</span>.
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    const unfurnishedDetails = {
+      'Balcony': [
+        'Floor tiles & surface deep machine/manual scrub and wash',
+        'Iron/steel railings, grills & slider frames wiped and dusted',
+        'Ceiling & wall cobweb removal with dry dusting',
+        'Balcony water drainage outlets cleared'
+      ],
+      'Kitchen': [
+        'All empty modular cabinets & drawers cleaned inside & out',
+        'Granite countertop, slab & sink hard water stain removal',
+        'Backsplash wall tiles & stove area degreased & scrubbed',
+        'Exhaust fan wiped & all electrical switchboards cleaned'
+      ],
+      'Living Room': [
+        'Industrial single-disc rotary machine floor scrubbing & buffing',
+        'Ceiling fan, tube lights & chandelier dust removal',
+        'Wall skirting (bottom tile border) & switchboards wiped',
+        'Main entrance door, windows & slider tracks suctioned clean'
+      ],
+      'Bedroom': [
+        'All empty wardrobes & closets vacuumed and wiped inside/outside',
+        'Complete bedroom floor deep rotary machine scrubbing',
+        'Window grills wiped, glass polished & slider tracks cleaned',
+        'Ceiling fan blades, lights & AC unit external body wiped'
+      ],
+      'Bathroom': [
+        'Wall & floor tiles hard water descaling with rotary scrub',
+        'Commode & washbasin deep stain scrub and scale removal',
+        'Taps, shower head & chrome fixtures polished to a mirror finish',
+        'Mirror glass & exhaust fan thoroughly wiped clean'
+      ]
+    };
+
+    const furnishedDetails = {
+      'Balcony': [
+        'Floor tiles & surface deep machine scrub and pressure wash',
+        'Iron/steel railings, grills & window frames wiped and dusted',
+        'Ceiling & wall cobweb removal with dry dusting',
+        'Water drain unclogged and cleaned'
+      ],
+      'Kitchen': [
+        'Cabinet & drawer exterior wipe down and grease removal',
+        'Granite countertop, slab & sink hard water stain cleaning',
+        'Gas stove & backsplash wall tile oil stain degreasing',
+        'Exhaust fan & switchboards cleaned'
+      ],
+      'Living Room': [
+        'Living room sofa set dry vacuum extraction for dust removal',
+        'Center table, TV unit & furniture exterior wiped and dusted',
+        'Ceiling fans & lighting fixtures dusted',
+        'Complete living room rotary floor scrub & buffing (Interior cabinets excluded)'
+      ],
+      'Bedroom': [
+        'Bed mattress dry vacuum extraction for dust and allergen removal',
+        'Wardrobes & dresser exterior surface dusting and wipe down',
+        'Window grills, glass polish & slider tracks cleaned',
+        'Ceiling fan & AC exterior wipe (Wardrobe interiors excluded)'
+      ],
+      'Bathroom': [
+        'Wall & floor tiles hard water descaling with deep scrub',
+        'Commode & washbasin deep chemical wash & scale removal',
+        'Taps, shower head & chrome steel fixtures mirror polished',
+        'Bathroom mirror & exhaust fan wiped clean'
+      ]
+    };
+
+    const quickAddons = [
+      { id: 'addon_ceiling', name: 'Ceiling dusting & cobweb cleaning', rating: '★ 4.83 (62K)', price: 199, img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=250&q=80', count: 0 },
+      { id: 'addon_sofa', name: 'Sofa & upholstery wet shampooing', rating: '★ 4.81 (23K)', price: 149, img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=250&q=80', count: 0 },
+      { id: 'addon_balcony', name: 'Balcony deep cleaning', rating: '★ 4.82 (31K)', price: 499, img: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=250&q=80', count: 0 }
+    ];
+
+    const allServices = {
+      '1bhk_unf': {
+        name: '1 BHK Unfurnished', price: 2499, oldPrice: 3500, discount: '28% Off', rating: '★ 4.78 (850K reviews)', category: 'package', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80',
+        subtitle: '1 Hall, 1 Kitchen, 1 Bath, 1 Balcony (Empty Flat)',
+        sections: unfurnishedDetails, count: 0
+      },
+      '1bhk_fur': {
+        name: '1 BHK Furnished', price: 3299, oldPrice: 4400, discount: '25% Off', rating: '★ 4.79 (1.1M reviews)', category: 'package', isFurnished: true,
+        img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
+        subtitle: '1 Hall, 1 Kitchen, 1 Bath, 1 Balcony (Furnished)',
+        sections: furnishedDetails, count: 0
+      },
+      '2bhk_unf': {
+        name: '2 BHK Unfurnished', price: 3299, oldPrice: 4800, discount: '30% Off', rating: '★ 4.79 (920K reviews)', category: 'package', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80',
+        subtitle: '2 Beds, 1 Hall, Kitchen, 2 Baths, 2 Balconies (Empty)',
+        sections: unfurnishedDetails, count: 0
+      },
+      '2bhk_fur': {
+        name: '2 BHK Furnished', price: 4499, oldPrice: 5600, discount: '20% Off', rating: '★ 4.82 (1.4M reviews)', category: 'package', isFurnished: true,
+        img: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=600&q=80',
+        subtitle: '2 Beds, Hall, Kitchen, 2 Baths, 2 Balconies (Furnished)',
+        sections: furnishedDetails, count: 0
+      },
+      '3bhk_unf': {
+        name: '3 BHK Unfurnished', price: 4499, oldPrice: 6000, discount: '25% Off', rating: '★ 4.80 (750K reviews)', category: 'package', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?auto=format&fit=crop&w=600&q=80',
+        subtitle: '3 Beds, 1 Hall, Kitchen, 3 Baths, 3 Balconies (Empty)',
+        sections: unfurnishedDetails, count: 0
+      },
+      '3bhk_fur': {
+        name: '3 BHK Furnished', price: 5499, oldPrice: 7000, discount: '22% Off', rating: '★ 4.83 (890K reviews)', category: 'package', isFurnished: true,
+        img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=80',
+        subtitle: '3 Beds, Hall, Kitchen, 3 Baths, 3 Balconies (Furnished)',
+        sections: furnishedDetails, count: 0
+      },
+      '4bhk_unf': {
+        name: '4 BHK Unfurnished', price: 5499, oldPrice: 7500, discount: '26% Off', rating: '★ 4.81 (500K reviews)', category: 'package', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80',
+        subtitle: '4 Beds, Hall, Kitchen, 4 Baths, 4 Balconies (Empty)',
+        sections: unfurnishedDetails, count: 0
+      },
+      '4bhk_fur': {
+        name: '4 BHK Furnished', price: 6999, oldPrice: 9000, discount: '22% Off', rating: '★ 4.84 (620K reviews)', category: 'package', isFurnished: true,
+        img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80',
+        subtitle: '4 Beds, Hall, Kitchen, 4 Baths, 4 Balconies (Furnished)',
+        sections: furnishedDetails, count: 0
+      },
+      'villa_deep': {
+        name: 'Luxury Independent Villa Deep Cleaning', ratePerSqFt: 5, defaultSqFt: 1500, sqFt: 1500, isSqFtBased: true,
+        get price() { return this.sqFt * this.ratePerSqFt; }, oldPrice: '₹7 / sq.ft', discount: '₹5 / sq.ft', rating: '★ 4.85 (321K reviews)', category: 'villa', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80',
+        subtitle: 'Multi-Floor Independent House / Duplex Villa',
+        sections: {
+          'Full Villa Scope': [
+            'Calculated at ₹5 per sq.ft built-up area',
+            'Multi-floor single-disc rotary machine scrubbing',
+            'Terrace, open balconies & parking area pressure washed',
+            'All bathrooms deep descaled, tile scrubbed & chrome fixtures polished',
+            'Glass railings, window tracks & internal doors wiped clean'
+          ]
+        }, count: 0
+      },
+      'kitchen': {
+        name: 'Kitchen Deep Clean', price: 1499, oldPrice: 2000, discount: '25% Off', rating: '★ 4.80 (120K reviews)', category: 'single', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80',
+        subtitle: 'Chimney, stove, sink & tile degrease',
+        sections: {
+          'Kitchen Detailing': [
+            'Chimney outer hood & oil filter mesh degreased',
+            'Gas stove platform, burners & backsplash tiles carbon removal',
+            'Kitchen sink descaling & taps shined mirror-like',
+            'Cabinets exterior wiped down and handles polished'
+          ]
+        }, count: 0
+      },
+      'bathroom': {
+        name: 'Bathroom Deep Clean', price: 399, oldPrice: 600, discount: '33% Off', rating: '★ 4.82 (250K reviews)', category: 'single', isFurnished: false,
+        img: 'https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?auto=format&fit=crop&w=600&q=80',
+        subtitle: 'Tile descaling & commode deep wash',
+        sections: {
+          'Washroom Scope': [
+            'Wall & floor tile hard water descaling with rotary machine scrub',
+            'Commode internal & external deep stain wash and scale removal',
+            'Taps, shower head & chrome fixtures mirror polished',
+            'Mirror & exhaust fan streak-free wipe down'
+          ]
+        }, count: 0
+      },
+      'living': {
+        name: 'Living Room & Sofa', price: 699, oldPrice: 1000, discount: '30% Off', rating: '★ 4.81 (95K reviews)', category: 'single', isFurnished: true,
+        img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80',
+        subtitle: 'Sofa shampooing & floor polish',
+        sections: {
+          'Living Room Details': [
+            'Sofa deep vacuuming & foam shampoo spot treatment',
+            'Rotary machine floor scrub & buffing in living area',
+            'TV cabinet, coffee table & electronic surface dusting',
+            'Ceiling fans & lights wiped down'
+          ]
+        }, count: 0
+      },
+      'window': {
+        name: 'Window Glass & Grill', price: 199, oldPrice: 350, discount: '43% Off', rating: '★ 4.79 (60K reviews)', category: 'single', isFurnished: false,
+        img: 'https://drive.google.com/thumbnail?id=16X1IC9DCpwIJGpQGM49jEN-Kd5xVy4F1&sz=w800',
+        subtitle: 'Squeegee wiper & track suction',
+        sections: {
+          'Window Cleaning': [
+            'Industrial high-suction vacuum extraction of window slider tracks',
+            'Glass sprayed with streak-free solution & squeegee wiper finish',
+            'Window metal grills and frames wiped clean'
+          ]
+        }, count: 0
+      }
+    };
+
+    let generatedAuthOtp = '';
+    let isUserAuthenticated = false;
+    let userVerifiedNumber = '';
+
+    function calcTotal() {
+      let total = 0;
+      Object.keys(allServices).forEach(k => {
+        if (allServices[k].count > 0) total += allServices[k].price * allServices[k].count;
+      });
+      quickAddons.forEach(a => {
+        if (a.count > 0) total += a.price * a.count;
+      });
+      return total;
+    }
+
+    function updateCartSummary() {
+      let count = 0;
+      Object.keys(allServices).forEach(k => { count += allServices[k].count; });
+      quickAddons.forEach(a => { count += a.count; });
+
+      const total = calcTotal();
+      const bar = document.getElementById('homeBottomBar');
+
+      if (count > 0) {
+        bar.style.display = 'flex';
+        document.getElementById('bottomTotalPrice').textContent = `₹${total.toLocaleString('en-IN')}`;
+        document.getElementById('bottomItemCount').textContent = `${count} ${count === 1 ? 'service' : 'services'}`;
+      } else {
+        bar.style.display = 'none';
+      }
+
+      document.getElementById('navCartCount').textContent = count;
+      const billTotal = document.getElementById('billFinalAmount');
+      if (billTotal) billTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+      const itemTotal = document.getElementById('billItemTotal');
+      if (itemTotal) itemTotal.textContent = `₹${total.toLocaleString('en-IN')}`;
+    }
+
+    function toggleQuickAddon(addonId) {
+      const addon = quickAddons.find(a => a.id === addonId);
+      if (!addon) return;
+      addon.count = addon.count > 0 ? 0 : 1;
+      renderPeopleAlsoTake();
+      renderCartScreenItems();
+      updateCartSummary();
+    }
+
+    function renderPeopleAlsoTake() {
+      const container1 = document.getElementById('peopleAlsoTakeContainer');
+      const container2 = document.getElementById('cartPeopleAlsoTakeContainer');
+      
+      let html = '';
+      quickAddons.forEach(item => {
+        const isAdded = item.count > 0;
+        html += `
+          <div class="min-w-[125px] w-[125px] bg-white border border-slate-200 rounded-xl p-2 flex flex-col justify-between shadow-2xs">
+            <img src="${item.img}" class="w-full h-16 object-cover rounded-lg mb-1">
+            <span class="text-[10px] font-bold text-slate-900 leading-tight block">${item.name}</span>
+            <span class="text-[9px] text-slate-400 mt-0.5 block">${item.rating}</span>
+            <div class="flex items-center justify-between mt-2 pt-1 border-t border-slate-100">
+              <span class="text-xs font-extrabold text-slate-900">₹${item.price}</span>
+              <button onclick="toggleQuickAddon('${item.id}')" type="button" class="text-[10px] font-bold px-2 py-0.5 rounded transition ${isAdded ? 'bg-[#5c3cd6] text-white' : 'text-[#5c3cd6] border border-slate-200'}">
+                ${isAdded ? '✓ Added' : 'Add'}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (container1) container1.innerHTML = html;
+      if (container2) container2.innerHTML = html;
+    }
+
+    function openDetailsModal(key) {
+      const item = allServices[key];
+      if (!item) return;
+
+      document.getElementById('detailModalTitle').textContent = item.name;
+      document.getElementById('detailModalSubtitle').textContent = item.subtitle;
+      document.getElementById('detailModalPrice').textContent = `₹${item.price.toLocaleString('en-IN')}`;
+
+      const container = document.getElementById('detailSectionsContainer');
+      container.innerHTML = '';
+
+      if (item.sections) {
+        Object.keys(item.sections).forEach(room => {
+          let tasksHtml = '';
+          item.sections[room].forEach(t => {
+            tasksHtml += `<li class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold">✓</span><span>${t}</span></li>`;
+          });
+
+          const box = document.createElement('div');
+          box.className = 'bg-slate-50 border border-slate-200/80 rounded-xl p-2.5';
+          box.innerHTML = `
+            <span class="font-bold text-sky-800 text-[11px] block mb-1">• ${room}</span>
+            <ul class="space-y-1 text-[10.5px] text-slate-600 pl-1">${tasksHtml}</ul>
+          `;
+          container.appendChild(box);
+        });
+      }
+
+      const notice = document.getElementById('furnishedNoticeBlock');
+      if (item.isFurnished) notice.classList.remove('hidden');
+      else notice.classList.add('hidden');
+
+      document.getElementById('detailsModalBackdrop').classList.remove('hidden');
+    }
+
+    function closeDetailsModal() {
+      document.getElementById('detailsModalBackdrop').classList.add('hidden');
+    }
+
+    function toggleService(key) {
+      if (!allServices[key]) return;
+      allServices[key].count = allServices[key].count > 0 ? 0 : 1;
+      renderCards();
+      updateCartSummary();
+    }
+
+    function handleCartClick() {
+      let count = 0;
+      Object.keys(allServices).forEach(k => { count += allServices[k].count; });
+      quickAddons.forEach(a => { count += a.count; });
+
+      if (count === 0) {
+        alert("Please add at least 1 service to your cart first.");
+        return;
+      }
+      showCartScreen();
+    }
+
+    function showCartScreen() {
+      document.getElementById('homeBottomBar').style.display = 'none';
+      renderCartScreenItems();
+      renderPeopleAlsoTake();
+      document.getElementById('catalogScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.add('hidden');
+      document.getElementById('cartScreen').classList.remove('hidden');
+      document.getElementById('cartScreen').scrollTop = 0;
+    }
+
+    function showCatalogScreen() {
+      document.getElementById('cartScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.add('hidden');
+      document.getElementById('catalogScreen').classList.remove('hidden');
+      updateCartSummary();
+    }
+
+    function backToCartFromAddress() {
+      document.getElementById('addressScreen').classList.add('hidden');
+      document.getElementById('cartScreen').classList.remove('hidden');
+    }
+
+    function renderCartScreenItems() {
+      const container = document.getElementById('cartScreenItems');
+      container.innerHTML = '';
+
+      Object.keys(allServices).forEach(key => {
+        const item = allServices[key];
+        if (item.count > 0) {
+          const div = document.createElement('div');
+          div.className = 'py-3 flex justify-between items-start';
+          div.innerHTML = `
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">${item.name}</h4>
+              <p class="text-[11px] text-slate-500">• Full deep cleaning package x${item.count}</p>
+              <button onclick="openDetailsModal('${key}')" type="button" class="text-[11px] font-bold text-[#5c3cd6] mt-1 block">View details</button>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-bold text-slate-900 block">₹${(item.price * item.count).toLocaleString('en-IN')}</span>
+              <button onclick="allServices['${key}'].count = 0; renderCartScreenItems(); updateCartSummary(); renderCards();" type="button" class="text-rose-500 font-bold text-[10px] mt-1 bg-rose-50 px-2 py-0.5 rounded">Remove</button>
+            </div>
+          `;
+          container.appendChild(div);
+        }
+      });
+
+      quickAddons.forEach(addon => {
+        if (addon.count > 0) {
+          const div = document.createElement('div');
+          div.className = 'py-2.5 flex justify-between items-center text-xs';
+          div.innerHTML = `
+            <div>
+              <span class="font-bold text-slate-800 block">${addon.name}</span>
+              <span class="text-[10px] text-slate-400">Add-on service</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-900">₹${addon.price}</span>
+              <button onclick="toggleQuickAddon('${addon.id}');" type="button" class="text-rose-500 text-[10px] bg-rose-50 px-1.5 py-0.5 rounded">✕</button>
+            </div>
+          `;
+          container.appendChild(div);
+        }
+      });
+
+      updateCartSummary();
+    }
+
+    function openPhoneAuthModal() {
+      let count = 0;
+      Object.keys(allServices).forEach(k => { count += allServices[k].count; });
+      quickAddons.forEach(a => { count += a.count; });
+
+      if (count === 0) {
+        alert("Your cart is empty. Please select a service first.");
+        return;
+      }
+
+      if (isUserAuthenticated) {
+        goToAddressScreen();
+        return;
+      }
+
+      document.getElementById('sheetOtpBlock').classList.add('hidden');
+      document.getElementById('sheetContinueBtn').textContent = "Continue";
+      document.getElementById('phoneAuthModal').classList.remove('hidden');
+    }
+
+    function closePhoneAuthModal() {
+      document.getElementById('phoneAuthModal').classList.add('hidden');
+    }
+
+    function handlePhoneAuthStep() {
+      const phone = document.getElementById('sheetPhoneInput').value.trim();
+      const otpBlock = document.getElementById('sheetOtpBlock');
+      const continueBtn = document.getElementById('sheetContinueBtn');
+
+      if (!/^\d{10}$/.test(phone)) {
+        alert("Please enter a valid 10-digit mobile number.");
+        document.getElementById('sheetPhoneInput').focus();
+        return;
+      }
+
+      if (otpBlock.classList.contains('hidden')) {
+        userVerifiedNumber = phone;
+        generatedAuthOtp = Math.floor(1000 + Math.random() * 9000).toString();
+        document.getElementById('sheetCodeDisplay').textContent = generatedAuthOtp;
+        otpBlock.classList.remove('hidden');
+        continueBtn.textContent = "Verify & Proceed to Address";
+        return;
+      }
+
+      const entered = document.getElementById('sheetOtpInput').value.trim();
+      if (entered === generatedAuthOtp) {
+        isUserAuthenticated = true;
+        closePhoneAuthModal();
+        goToAddressScreen();
+      } else {
+        alert("Incorrect verification code. Please check the 4-digit code shown.");
+      }
+    }
+
+    function goToAddressScreen() {
+      document.getElementById('cartScreen').classList.add('hidden');
+      document.getElementById('addressScreen').classList.remove('hidden');
+      document.getElementById('displayVerifiedPhone').textContent = '+91 ' + userVerifiedNumber;
+      document.getElementById('addressBillTotal').textContent = `₹${calcTotal().toLocaleString('en-IN')}`;
+    }
+
+    function sendFinalWhatsAppBooking() {
+      const name = document.getElementById('custName').value.trim();
+      const date = document.getElementById('custDate').value;
+      const slot = document.getElementById('custSlot').value;
+      const addr = document.getElementById('custAddr').value.trim();
+      const total = `₹${calcTotal().toLocaleString('en-IN')}`;
+
+      if (!name) {
+        alert("Please enter your Full Name.");
+        document.getElementById('custName').focus();
+        return;
+      }
+      if (!addr) {
+        alert("Please enter your complete service address.");
+        document.getElementById('custAddr').focus();
+        return;
+      }
+
+      const items = [];
+      Object.keys(allServices).forEach(k => {
+        if (allServices[k].count > 0) items.push(`${allServices[k].name} (Qty: ${allServices[k].count})`);
+      });
+      quickAddons.forEach(a => {
+        if (a.count > 0) items.push(`${a.name} (₹${a.price})`);
+      });
+
+      const text = `*New Cleaning Booking - A2Z Home Deep Cleaning*\n\n` +
+                   `👤 *Customer Name:* ${name}\n` +
+                   `📱 *Verified Phone:* ${userVerifiedNumber}\n` +
+                   `🧹 *Booked Services:*\n• ${items.join('\n• ')}\n\n` +
+                   `💰 *Total Amount:* ${total}\n` +
+                   `📅 *Date:* ${date}\n` +
+                   `🕒 *Joining Time:* ${slot}\n` +
+                   `📍 *Address:*\n${addr}`;
+
+      window.open(`https://wa.me/918686932203?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function fetchCurrentLocation(e) {
+      if (e) e.preventDefault();
+
+      const locBtnText = document.getElementById('locBtnText');
+      const addrBox = document.getElementById('custAddr');
+      const locStatus = document.getElementById('locStatus');
+
+      locBtnText.textContent = "Detecting...";
+      locStatus.classList.remove('hidden');
+      locStatus.className = "text-[10px] text-sky-600 mt-1 font-semibold";
+      locStatus.textContent = "Getting accurate GPS location...";
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            const accuracy = Math.round(position.coords.accuracy || 0);
+            const mapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+            
+            const currentText = addrBox.value.replace(/Google Maps:.*(\r?\n)*/g, '').trim();
+            addrBox.value = `Google Maps:\n${mapsLink}\n\n${currentText ? currentText : 'Flat/Door No & Area: '}`;
+            
+            locBtnText.textContent = "Detected ✓";
+            locStatus.className = "text-[10px] text-emerald-600 mt-1 font-bold";
+            locStatus.textContent = accuracy ? `✓ GPS located (~${accuracy}m). Add Flat/House no.` : "✓ Current GPS Location added! Please add Flat/House no.";
+            addrBox.focus();
+          },
+          (error) => {
+            fetchFallbackCoordinates(error);
+          },
+          { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+        );
+      } else {
+        fetchFallbackCoordinates({ code: 0 });
+      }
+    }
+
+    function fetchFallbackCoordinates(error) {
+      const locBtnText = document.getElementById('locBtnText');
+      const addrBox = document.getElementById('custAddr');
+      const locStatus = document.getElementById('locStatus');
+
+      locBtnText.textContent = "Retry GPS";
+      locStatus.classList.remove('hidden');
+      locStatus.className = "text-[10px] text-amber-700 mt-1 font-semibold";
+
+      if (error && error.code === 1) {
+        locStatus.textContent = "Location permission denied. Please allow Location in browser/phone or type your area below.";
+      } else {
+        locStatus.textContent = "Could not get exact GPS lock. Please turn on Location/GPS and try again or type area manually.";
+      }
+      addrBox.focus();
+    }
+
+    function updateVillaSqFt(key, newSqFt) {
+      const val = parseInt(newSqFt) || 500;
+      allServices[key].sqFt = val;
+      const priceDisplay = document.getElementById(`price-display-${key}`);
+      if (priceDisplay) {
+        priceDisplay.textContent = `₹${allServices[key].price.toLocaleString('en-IN')}`;
+      }
+      updateCartSummary();
+    }
+
+    function renderCards() {
+      const pkgContainer = document.getElementById('packagesContainer');
+      const singleContainer = document.getElementById('singleServicesContainer');
+      const villaContainer = document.getElementById('villaContainer');
+      
+      pkgContainer.innerHTML = '';
+      singleContainer.innerHTML = '';
+      villaContainer.innerHTML = '';
+
+      Object.keys(allServices).forEach(key => {
+        const item = allServices[key];
+
+        if (item.category === 'villa') {
+          const villaCard = document.createElement('div');
+          villaCard.className = 'bg-gradient-to-b from-sky-50/80 to-white rounded-2xl border border-sky-200 overflow-hidden shadow-xs';
+          villaCard.innerHTML = `
+            <div class="relative cursor-pointer" onclick="openDetailsModal('${key}')">
+              <img src="${item.img}" alt="${item.name}" class="w-full h-36 object-cover">
+              <span class="absolute top-2 right-2 bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shadow">BEST FOR LARGE HOUSES</span>
+            </div>
+            <div class="p-3.5 space-y-3">
+              <div>
+                <div class="flex items-baseline justify-between">
+                  <h3 class="text-sm font-bold text-slate-900 leading-tight">${item.name}</h3>
+                  <span class="text-xs font-black text-sky-700">₹5 / sq.ft</span>
+                </div>
+                <p class="text-[10px] text-slate-500 font-medium mt-0.5">${item.rating}</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">${item.subtitle}</p>
+              </div>
+              <div class="p-2.5 bg-sky-50/60 border border-sky-100 rounded-xl flex items-center justify-between gap-3">
+                <span class="text-[11px] font-semibold text-slate-700">Enter Built-up Area:</span>
+                <div class="flex items-center gap-1.5 w-36">
+                  <input type="number" step="100" min="500" value="${item.sqFt}" oninput="updateVillaSqFt('${key}', this.value)" class="w-full text-xs font-bold px-2.5 py-1 bg-white border border-sky-200 rounded-lg text-slate-900 text-right">
+                  <span class="text-xs font-bold text-slate-500">sq.ft</span>
+                </div>
+              </div>
+              <button onclick="openDetailsModal('${key}')" type="button" class="w-full text-center py-1.5 text-[11px] font-bold text-sky-700 bg-sky-50/70 rounded-lg border border-sky-200/80">
+                View details
+              </button>
+              <div class="flex items-center justify-between pt-2.5 border-t border-sky-100">
+                <div>
+                  <span class="text-[10px] text-slate-400 block leading-none">Estimated Total</span>
+                  <span id="price-display-${key}" class="text-sm font-black text-slate-900">₹${item.price.toLocaleString('en-IN')}</span>
+                </div>
+                <button onclick="toggleService('${key}');" type="button" class="text-xs font-bold px-4 py-1.5 rounded-full ${item.count > 0 ? 'bg-sky-700 text-white' : 'bg-sky-100/80 text-sky-900'} border border-sky-200">
+                  ${item.count > 0 ? 'Added ✓' : '+ Add Villa Clean'}
+                </button>
+              </div>
+            </div>
+          `;
+          villaContainer.appendChild(villaCard);
+          return;
+        }
+
+        const isPkg = item.category === 'package';
+        const cardTintClass = isPkg
+          ? (item.isFurnished
+              ? 'bg-gradient-to-b from-teal-50/75 to-white border-teal-200/90'
+              : 'bg-gradient-to-b from-sky-50/80 to-white border-sky-200/90')
+          : 'bg-white border-slate-200';
+        const detailBtnClass = isPkg
+          ? (item.isFurnished
+              ? 'text-teal-700 bg-teal-50/70 border-teal-200/80'
+              : 'text-sky-700 bg-sky-50/70 border-sky-200/80')
+          : 'text-[#5c3cd6] bg-slate-50 border-slate-200';
+        const addBtnClass = item.count > 0
+          ? (isPkg ? (item.isFurnished ? 'bg-teal-700 text-white' : 'bg-sky-700 text-white') : 'bg-[#5c3cd6] text-white')
+          : (isPkg ? (item.isFurnished ? 'bg-teal-100/80 text-teal-900 border-teal-200' : 'bg-sky-100/80 text-sky-900 border-sky-200') : 'bg-slate-100 text-slate-800 border-slate-200');
+
+        const card = document.createElement('div');
+        card.className = `${cardTintClass} rounded-xl border overflow-hidden shadow-2xs flex flex-col justify-between`;
+
+        card.innerHTML = `
+          <div class="relative cursor-pointer" onclick="openDetailsModal('${key}')">
+            <img src="${item.img}" alt="${item.name}" class="w-full h-28 object-cover">
+            <span class="absolute top-1.5 right-1.5 bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow">${item.discount}</span>
+          </div>
+          <div class="p-2.5 flex flex-col flex-grow justify-between">
+            <div class="cursor-pointer" onclick="openDetailsModal('${key}')">
+              <h3 class="text-xs font-bold text-slate-900 leading-tight">${item.name}</h3>
+              <p class="text-[10px] text-slate-500 font-semibold mt-0.5">${item.rating}</p>
+              <p class="text-[9px] text-slate-400 mt-0.5 line-clamp-1">${item.subtitle}</p>
+            </div>
+
+            <button onclick="openDetailsModal('${key}')" type="button" class="mt-2 py-1 text-[9.5px] font-bold ${detailBtnClass} rounded border">
+              View details
+            </button>
+
+            <div class="mt-2.5 flex items-center justify-between pt-1.5 border-t border-slate-100">
+              <div>
+                <span class="text-xs font-extrabold text-slate-900">₹${item.price.toLocaleString('en-IN')}</span>
+                <span class="text-[9px] text-slate-400 line-through block leading-none">₹${item.oldPrice.toLocaleString('en-IN')}</span>
+              </div>
+              <button onclick="toggleService('${key}');" type="button" class="text-[11px] font-bold px-3 py-1 rounded-full ${addBtnClass} border">
+                ${item.count > 0 ? '✓' : '+ Add'}
+              </button>
+            </div>
+          </div>
+        `;
+
+        if (item.category === 'package') pkgContainer.appendChild(card);
+        else singleContainer.appendChild(card);
+      });
+    }
+
+    const datePicker = document.getElementById('custDate');
+    const today = new Date();
+    datePicker.min = today.toISOString().split('T')[0];
+    datePicker.value = today.toISOString().split('T')[0];
+
+    renderPeopleAlsoTake();
+    renderCards();
+    updateCartSummary();
+  </script>
+
+  <!-- Google tag (gtag.js) - Added successfully -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18516875102"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18516875102');
+  </script>
+</body>
+</html>
